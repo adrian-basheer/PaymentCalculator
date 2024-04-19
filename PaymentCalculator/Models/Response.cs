@@ -35,6 +35,11 @@ namespace PaymentCalculator.Models
             }
         }
 
+        public static string GetCsvColumnHeaders()
+        {
+            return "Gross Package,Superannuation,Taxable Income,Medicare Levy,Budget Repair Levy,Income Tax,Net Income,Pay Packet,Pay Frequency";
+        }
+
         public string GetCsvString()
         {
             StringBuilder sb = new StringBuilder();
