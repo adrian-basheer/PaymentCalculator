@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PaymentCalculator": {
+      "commandName": "Project",
+      "commandLineArgs": "--package-amount 65000 --pay-frequency M"
+    }
+  }
+}
