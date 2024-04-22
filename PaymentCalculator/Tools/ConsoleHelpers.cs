@@ -44,6 +44,7 @@ internal class ConsoleHelpers
 
             if (!decimal.TryParse(strAmount, out decimalAmount))
             {
+               Console.WriteLine("Invalid amount entered.");
                decimalAmount = -1;
             }
         }
