@@ -22,7 +22,7 @@ internal class ConsoleHelpers
         return "$" + number.ToString("N");
     }
 
-    public static int GetPackageAmount(string[] args)
+    public static decimal GetPackageAmount(string[] args)
     {
         int packageAmount = GetPackageAmountFromArgs(args);
         if (packageAmount > 0)
@@ -31,21 +31,24 @@ internal class ConsoleHelpers
         }
 
         // keep trying till you get a valid package amount
-        int intAmount = -1;
-        while (intAmount < 0)
+        decimal decimalAmount = -1;
+        while (decimalAmount < 0)
         {
-            Console.Write("Enter package amount: $");
-            string? readLine = Console.ReadLine();
+            Console.Write("Enter valid package positive amount: $");
+            string? strAmount = Console.ReadLine();
 
-            if (readLine == null)
+            if (String.IsNullOrEmpty(strAmount))
             {
                 continue;
             }
 
-            intAmount = StringToInt(readLine);
+            if (!decimal.TryParse(strAmount, out decimalAmount))
+            {
+               decimalAmount = -1;
+            }
         }
 
-        return intAmount;
+        return decimalAmount;
     }
     public static PayFrequency GetFrequencyFromArgs(string[] args)
     {
@@ -56,13 +59,12 @@ internal class ConsoleHelpers
             return PayFrequency.Unknown;
         }
 
-        int index = Array.IndexOf(args, "--pay-frequency") + 1;
-        if (index >= args.Length)
+        if (argumentIndex + 1 >= args.Length)
         {
             return PayFrequency.Unknown;
         }
 
-        return args[index].ToLower() switch
+        return args[argumentIndex + 1].ToLower() switch
         {
             "w" or "W" => PayFrequency.Weekly,
             "f" or "F" => PayFrequency.Fortnightly,
@@ -82,18 +84,18 @@ internal class ConsoleHelpers
         // the user should enter a single letter, either 'w', 'f' or 'm'.
 
         char payFrequency = ' ';
-        while (payFrequency != 'w' && payFrequency != 'f' && payFrequency != 'm')
+        do
         {
             Console.Write("Enter pay frequency (w for weekly, f for fortnightly, m for monthly): ");
-            string? readLine = Console.ReadLine();
+            string? line = Console.ReadLine();
 
-            if (readLine == null || readLine.Length != 1)
+            if (line == null || line.Length == 0)
             {
                 continue;
             }
 
-            payFrequency = readLine[0];
-        }
+            payFrequency = line.ToLower()[0];
+        } while (payFrequency != 'w' && payFrequency != 'f' && payFrequency != 'm');
 
         // becasue of the while loop above, payFrequency will always be 'w', 'f' or 'm'
         return payFrequency switch
@@ -115,29 +117,19 @@ internal class ConsoleHelpers
     /// <returns></returns>
     public static int GetPackageAmountFromArgs(string[] args)
     {
-        int argumentIndex = Array.IndexOf(args, "--package-amount");
+        int index = Array.IndexOf(args, "--package-amount");
 
-        if (argumentIndex == -1)
+        if (index == -1)
         {
             return -1;
         }
 
-        int index = Array.IndexOf(args, "--package-amount") + 1;
-        if (index >= args.Length)
+        if (index + 1 >= args.Length)
         {
             return -1;
         }
 
-        return StringToInt(args[index]);
-    }
-
-    public static int StringToInt(string strAmount)
-    {
-        strAmount = strAmount.Trim();
-        if (strAmount.Length > int.MaxValue.ToString().Length - 1)
-        {
-            return -1;
-        }
+        string strAmount = args[index + 1];
 
         if (!int.TryParse(strAmount, out int intAmount))
         {

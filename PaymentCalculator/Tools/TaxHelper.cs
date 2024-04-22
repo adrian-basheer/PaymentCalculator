@@ -22,8 +22,8 @@ namespace PaymentCalculator.Tools
             // example is showing cents, but document says round to the nearest dollar
             response.TaxableIncome = Math.Round(grossPackage - response.Superannuation, 0, MidpointRounding.AwayFromZero);
 
+            // use the strategy pattern to calculate the tax
             TaxCalculationContext context = new TaxCalculationContext(new IncomeTaxStrategy(settings.IncomeTax));
-
             response.IncomeTax = context.CalculateAmount(response.TaxableIncome);
             response.MedicareLevy = new TaxCalculationContext(new MedicareLevyStrategy(settings.MedicareLevy)).CalculateAmount(response.TaxableIncome);
             response.BudgetRepairLevy = new TaxCalculationContext(new IncomeTaxStrategy(settings.BudgetRepairLevy)).CalculateAmount(response.TaxableIncome);

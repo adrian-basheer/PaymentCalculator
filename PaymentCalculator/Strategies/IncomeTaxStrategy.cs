@@ -14,6 +14,12 @@ namespace PaymentCalculator.Strategies
             return CalculateIncomeTax(taxableAmount, taxBrackets);
         }
 
+        /// <summary>
+        /// Since 
+        /// </summary>
+        /// <param name="taxableAmount"></param>
+        /// <param name="taxBrackets"></param>
+        /// <returns></returns>
         private static decimal CalculateIncomeTax(decimal taxableAmount, List<TaxBracket> taxBrackets)
         {
             decimal totalTax = 0;

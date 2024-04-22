@@ -14,18 +14,31 @@ namespace PaymentCalculator.Strategies
             return CalculateBudgetRepairLevy(taxableAmount, taxBrackets);
         }
 
+
+        /// <summary>
+        /// The logic below is the same as CalculateIncomeTax. Even though the specification has only two brackets, 
+        /// the logic is the same and will cater for more brackets if they are added in the future.
+        /// </summary>
+        /// <param name="taxableAmount"></param>
+        /// <param name="taxBrackets"></param>
+        /// <returns></returns>
         private static decimal CalculateBudgetRepairLevy(decimal taxableAmount, List<TaxBracket> taxBrackets)
         {
+            decimal totalTax = 0;
             for (int i = 0; i < taxBrackets.Count; i++)
             {
                 TaxBracket taxBracket = taxBrackets[i];
                 if (taxableAmount >= taxBracket.LowerBound)
                 {
-                    return Math.Ceiling(taxableAmount * taxBracket.Rate);
+                    totalTax += Math.Ceiling((taxableAmount - taxBracket.LowerBound) * taxBracket.Rate);
+                }
+                else if (taxableAmount >= taxBracket.UpperBound)
+                {
+                    totalTax += Math.Ceiling((taxBracket.UpperBound - taxBracket.LowerBound) * taxBracket.Rate);
                 }
             }
 
-            return 0;
+            return totalTax;
         }
     }
 }

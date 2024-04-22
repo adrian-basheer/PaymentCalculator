@@ -14,6 +14,16 @@ namespace PaymentCalculator.Strategies
             return CalculateMedicareLevy(taxableAmount, taxBrackets);
         }
 
+        /// <summary>
+        /// To keep data entry in the json file simple, we use the same structure. However, the 
+        /// logic below 'knows' which brackets to use and does not generically go through a sorted list
+        /// like in the other strategies.
+        /// 
+        /// Then again, doing things differently and cleanly is the advantage point of the strategy pattern.
+        /// </summary>
+        /// <param name="taxableAmount"></param>
+        /// <param name="taxBrackets"></param>
+        /// <returns></returns>
         private static decimal CalculateMedicareLevy(decimal taxableAmount, List<TaxBracket> taxBrackets)
         {
             if (taxableAmount >= taxBrackets[0].LowerBound)
