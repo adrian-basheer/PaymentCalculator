@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PaymentCalculator.Models;
+using PaymentCalculator.OutputGenerators;
 using PaymentCalculator.Tools;
 
 // Load settings from appsettings.json. Tax brackets can easily be changed in this file.
@@ -27,5 +28,7 @@ PayFrequency payFrequency = ConsoleHelpers.GetPayFrequency(args);
 // can put the csv string into a file, then open it in Excel and graph the results.
 Response response = TaxHelper.GetTaxCalcuations(grossPackage, payFrequency, settings);
 
-response.WriteToConsole();
+
+ConsoleOutputGenerator outputGenerator = new ConsoleOutputGenerator();
+Console.WriteLine(outputGenerator.GenerateOutput(response));
 
