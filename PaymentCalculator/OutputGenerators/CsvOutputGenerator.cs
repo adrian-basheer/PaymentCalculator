@@ -23,7 +23,6 @@ namespace PaymentCalculator.OutputGenerators
             for (int i = 0; i < responses.Length;)
             {
                 output[i++] = GenerateOutput(responses[i]);
-                output[i++] = Environment.NewLine;
             }
 
             return output;
